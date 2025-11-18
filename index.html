@@ -386,7 +386,7 @@
                         }
                     ],
                     session_id: "550e8400-e29b-41d4-a716-446655440000",
-                    user_id: data.userId,
+                    user_id: parseInt(data.userId),
                     app_name: tokenData.app_name
                 };
                 
@@ -401,7 +401,7 @@
                 const secondEventData = [{
                     event_name: "invoice-verify",
                     session_id: "550e8400-e29b-41d4-a716-446655440000",
-                    user_id: data.userId,
+                    user_id: parseInt(data.userId),
                     app_name: tokenData.app_name,
                     telegram_payment_charge_id: data.telegramChargeId,
                     payload: payload
