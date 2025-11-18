@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Analytics - Demo Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            font-family: inherit;
+        }
+
+        textarea {
+            font-family: monospace;
+            font-size: 13px;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #999;
+        }
+
+        .token-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #e1e5e9;
+            display: none;
+        }
+
+        .token-info.visible {
+            display: block;
+        }
+
+        .token-info h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .token-info p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .token-info p strong {
+            color: #333;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #43cea2 0%, #185a9d 100%);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .result.visible {
+            display: block;
+        }
+
+        .result.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .result textarea {
+            width: 100%;
+            height: 120px;
+            margin: 10px 0;
+            background: white;
+            border: 1px solid #c3e6cb;
+        }
+
+        .result.error textarea {
+            border: 1px solid #f5c6cb;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .divider {
+            margin: 25px 0;
+            border: none;
+            border-top: 2px solid #e1e5e9;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+        }
+
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Telegram Analytics Demo</h1>
+        <p class="subtitle">See how the requests will look for your application</p>
+        
+        <div class="info-box">
+            ℹ️ Enter your TGA Auth Token to see example requests for your application
+        </div>
+
+        <form id="demoForm" class="form">
+            <!-- Step 1: Token -->
+            <div class="form-group">
+                <label for="tgaToken">TGA Auth Token:</label>
+                <textarea id="tgaToken" name="tgaToken" required 
+                       placeholder="Paste your tga-auth-token (e.g.: eyJhcHBfbmFtZSI6...!QkydRTE0gks...)"></textarea>
+            </div>
+
+            <button type="button" id="parseTokenBtn" class="btn btn-secondary">Parse Token</button>
+
+            <!-- Token Information -->
+            <div id="tokenInfo" class="token-info">
+                <h3>📱 Application Information:</h3>
+                <p><strong>Name:</strong> <span id="appNameDisplay">-</span></p>
+                <p><strong>URL:</strong> <span id="appUrlDisplay">-</span></p>
+                <p><strong>Domain (origin):</strong> <span id="appDomainDisplay">-</span></p>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Step 2: Request Data -->
+            <div class="form-group">
+                <label for="telegramChargeId">Telegram Payment Charge ID:</label>
+                <input type="text" id="telegramChargeId" name="telegramChargeId" required 
+                       placeholder="e.g.: 550e8400-e29b-41d4-a716-446655440000">
+            </div>
+
+            <div class="form-group">
+                <label for="currency">Currency:</label>
+                <select id="currency" name="currency" required>
+                    <option value="XTR">XTR (Telegram Stars)</option>
+                    <option value="TON">TON</option>
+                    <option value="USDT">USDT</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="amount">Amount:</label>
+                <input type="number" id="amount" name="amount" step="0.01" value="100" required 
+                       placeholder="100">
+            </div>
+
+            <div class="form-group">
+                <label for="userId">User ID:</label>
+                <input type="text" id="userId" name="userId" required 
+                       placeholder="e.g.: 123456789">
+            </div>
+
+            <button type="submit" class="btn" id="generateBtn" disabled>Generate curl Commands</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // DOM elements
+        const form = document.getElementById('demoForm');
+        const parseTokenBtn = document.getElementById('parseTokenBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const tokenInput = document.getElementById('tgaToken');
+        const tokenInfo = document.getElementById('tokenInfo');
+        const resultDiv = document.getElementById('result');
+
+        // Token data
+        let tokenData = null;
+
+        // Token parsing
+        parseTokenBtn.addEventListener('click', () => {
+            const token = tokenInput.value.trim();
+            
+            if (!token) {
+                showResult('Please enter a token', 'error');
+                return;
+            }
+
+            try {
+                // Token format: base64json!signature
+                const parts = token.split('!');
+                if (parts.length !== 2) {
+                    throw new Error('Invalid token format. Expected format: base64json!signature');
+                }
+
+                // Decode base64 part
+                const base64Part = parts[0];
+                const jsonString = atob(base64Part);
+                tokenData = JSON.parse(jsonString);
+
+                // Check for required fields
+                if (!tokenData.app_name || !tokenData.app_domain) {
+                    throw new Error('Token does not contain required fields (app_name, app_domain)');
+                }
+
+                // Display information
+                document.getElementById('appNameDisplay').textContent = tokenData.app_name || '-';
+                document.getElementById('appUrlDisplay').textContent = tokenData.app_url || '-';
+                document.getElementById('appDomainDisplay').textContent = tokenData.app_domain || '-';
+                
+                tokenInfo.classList.add('visible');
+                generateBtn.disabled = false;
+                
+                showResult('✅ Token parsed successfully!', 'success');
+                
+            } catch (error) {
+                showResult(`❌ Error parsing token: ${error.message}`, 'error');
+                tokenInfo.classList.remove('visible');
+                tokenData = null;
+                generateBtn.disabled = true;
+            }
+        });
+
+        // Generate curl commands
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!tokenData) {
+                showResult('Please parse the token first', 'error');
+                return;
+            }
+
+            const formData = new FormData(form);
+            const data = {
+                token: formData.get('tgaToken').trim(),
+                telegramChargeId: formData.get('telegramChargeId').trim(),
+                amount: parseFloat(formData.get('amount')),
+                userId: formData.get('userId').trim(),
+                currency: formData.get('currency')
+            };
+
+            // Validation
+            if (!data.telegramChargeId || !data.amount || !data.userId) {
+                showResult('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (data.amount <= 0) {
+                showResult('Amount must be greater than 0', 'error');
+                return;
+            }
+
+            try {
+                // Generate payload
+                const timestamp = Date.now();
+                const payload = `${tokenData.app_name}_${data.userId}_${timestamp}`;
+                
+                // First request: register-invoice
+                const firstEvent = {
+                    event_name: "register-invoice",
+                    slug: `invoice_fixes_${data.userId}_${timestamp}`,
+                    title: "Lost transaction",
+                    description: `${tokenData.app_name} missed invoice`,
+                    payload: payload,
+                    currency: data.currency,
+                    prices: [
+                        {
+                            label: "Basic",
+                            amount: data.amount
+                        }
+                    ],
+                    session_id: "550e8400-e29b-41d4-a716-446655440000",
+                    user_id: data.userId,
+                    app_name: tokenData.app_name
+                };
+                
+                // For TON/USDT add transaction_hash
+                if (data.currency === 'TON' || data.currency === 'USDT') {
+                    firstEvent.transaction_hash = 'te6cckEBAgEAjQAB4YgBS+JmbSqqCavoSXoHW5vXDq1KGaoCdRRl3QnPIBhx5cuAE+PmCx1M38JHjzZi3BgjppUyKYkpqUQtZRYj3Y1DxMMX0Xw0xz5vJYpVzjRXmQJsGZcJH2JBQI/vH9d9cR7UJqamAAAKmgABQ4ACAABQgA6u3BHjCXRmW8VPuCeqyXgmFEqgS9Y5/nNhK9R4fvhc0Uo=';
+                }
+                
+                const firstEventData = [firstEvent];
+                
+                // Second request: invoice-verify
+                const secondEventData = [{
+                    event_name: "invoice-verify",
+                    session_id: "550e8400-e29b-41d4-a716-446655440000",
+                    user_id: data.userId,
+                    app_name: tokenData.app_name,
+                    telegram_payment_charge_id: data.telegramChargeId,
+                    payload: payload
+                }];
+                
+                // Generate curl commands
+                const firstCurl = generateCurlCommand(firstEventData, data.token, tokenData.app_domain);
+                const secondCurl = generateCurlCommand(secondEventData, data.token, tokenData.app_domain);
+                
+                // Display result
+                let additionalInfo = '';
+                if (data.currency === 'TON' || data.currency === 'USDT') {
+                    additionalInfo = `<p style="margin: 10px 0; padding: 10px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ffc107;">
+                        <strong>⚠️ Note:</strong> For ${data.currency} currency, the <code>transaction_hash</code> field with example BOC has been added to the first request</p>`;
+                }
+                
+                const resultHTML = `
+                    <strong>✅ Curl commands generated!</strong><br>
+                    <small>Currency: <strong>${data.currency}</strong></small><br><br>
+                    ${additionalInfo}
+                    
+                    <strong>Step 1: Register Invoice</strong><br>
+                    <small>This request creates an invoice in the analytics system</small>
+                    <textarea readonly onclick="this.select()">${firstCurl}</textarea>
+                    
+                    <strong>Step 2: Verify Invoice</strong><br>
+                    <small>This request confirms the invoice payment</small>
+                    <textarea readonly onclick="this.select()">${secondCurl}</textarea>
+                    
+                    <strong>Payload:</strong> <code>${payload}</code><br>
+                    <small>💡 Click on the text field to copy the command</small>
+                `;
+                
+                showResult(resultHTML, 'success');
+                
+            } catch (error) {
+                showResult(`❌ Error: ${error.message}`, 'error');
+            }
+        });
+
+        // Generate curl command
+        function generateCurlCommand(eventData, token, origin) {
+            const jsonData = JSON.stringify(eventData, null, 2);
+            
+            return `curl --location 'https://tganalytics.xyz/events' \\
+--header 'Host: tganalytics.xyz' \\
+--header 'content-type: application/json' \\
+--header 'accept: */*' \\
+--header 'tga-auth-token: ${token}' \\
+--header 'sec-fetch-site: cross-site' \\
+--header 'accept-language: en-US,en;q=0.9' \\
+--header 'sec-fetch-mode: cors' \\
+--header 'origin: ${origin}' \\
+--header 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko)' \\
+--header 'referer: ${origin}/' \\
+--header 'sec-fetch-dest: empty' \\
+--data-raw '${jsonData}'`;
+        }
+
+        // Display result
+        function showResult(message, type) {
+            resultDiv.innerHTML = message;
+            resultDiv.className = `result ${type} visible`;
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Reset on token change
+        tokenInput.addEventListener('input', () => {
+            tokenInfo.classList.remove('visible');
+            generateBtn.disabled = true;
+            tokenData = null;
+            resultDiv.classList.remove('visible');
+        });
+    </script>
+</body>
+</html>
+
